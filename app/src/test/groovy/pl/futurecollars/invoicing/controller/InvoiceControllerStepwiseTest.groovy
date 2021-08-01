@@ -60,7 +60,7 @@ class InvoiceControllerStepwiseTest extends Specification {
         invoiceId > 0
     }
 
-    
+
     def "invoice is returned correctly when getting by id"() {
         given:
         def expectedInvoice = originalInvoice
@@ -128,4 +128,18 @@ class InvoiceControllerStepwiseTest extends Specification {
         mockMvc.perform(get("/invoices/$invoiceId"))
                 .andExpect(status().isNotFound())
     }
+
+    def "empty array is returned when no invoices were added"() {
+        when:
+        def response = mockMvc.perform(get(ENDPOINT))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .getContentAsString()
+
+        then:
+        response == "[]"
+    }
+
+
 }
