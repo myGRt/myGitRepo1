@@ -21,6 +21,18 @@ class InvoiceControllerTest extends ControllerTest {
     @Autowired
     private JsonService jsonService
 
+
+    def "empty array is returned when no invoices were added2"() {
+        when:
+        def response = mockMvc.perform(get("/invoices"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
+        then:
+        response == "[]"
+    }
+
     def "empty array is returned when no invoices were created"() {
         expect:
         mockMvc.perform(get(ENDPOINT))
