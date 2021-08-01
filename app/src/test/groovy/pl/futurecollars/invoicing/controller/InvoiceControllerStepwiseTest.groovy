@@ -38,19 +38,6 @@ class InvoiceControllerStepwiseTest extends Specification {
     private int invoiceId
 
 
-    def "empty array is returned when no invoices were added"() {
-        when:
-        def response = mockMvc.perform(get(ENDPOINT))
-                .andExpect(status().isOk())
-                .andReturn()
-                .response
-                .contentAsString
-
-        then:
-        response == "[]"
-    }
-
-
     def "add single invoice"() {
         given:
         def invoiceAsJson = jsonService.objectToJson(originalInvoice)
