@@ -132,9 +132,22 @@ class InvoiceControllerStepwiseTest extends Specification {
     def "empty array is returned when no invoices were added"() {
         expect:
         mockMvc.perform(get(ENDPOINT))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
                 .getContentAsString() == "[]"
+    }
+
+    def "empty array is returned when no invoices were created2"() {
+        when:
+        def response = mockMvc.perform(get("/invoices"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
+        then:
+        response == "[]"
     }
 }
