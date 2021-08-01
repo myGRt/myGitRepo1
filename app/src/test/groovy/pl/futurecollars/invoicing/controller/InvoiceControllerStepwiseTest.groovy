@@ -60,25 +60,7 @@ class InvoiceControllerStepwiseTest extends Specification {
         invoiceId > 0
     }
 
-    def "one invoice is returned when getting all invoices"() {
-        given:
-        def expectedInvoice = originalInvoice
-        expectedInvoice.id = invoiceId
-
-        when:
-        def response = mockMvc.perform(get(ENDPOINT))
-                .andExpect(status().isOk())
-                .andReturn()
-                .response
-                .contentAsString
-
-        def invoices = jsonService.stringToObject(response, Invoice[])
-
-        then:
-        invoices.size() == 1
-        invoices[0] == expectedInvoice
-    }
-
+    
     def "invoice is returned correctly when getting by id"() {
         given:
         def expectedInvoice = originalInvoice
