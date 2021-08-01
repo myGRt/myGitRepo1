@@ -1,6 +1,5 @@
 package pl.futurecollars.invoicing.db
 
-import pl.futurecollars.invoicing.db.Database
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 import static pl.futurecollars.invoicing.TestHelpers.invoice
@@ -75,6 +74,7 @@ abstract class DatabaseTest extends Specification {
         def result = database.update(id, invoices.get(1))
 
         then:
+        database.getById(id).get() == invoices.get(1)
         result == Optional.of(originalInvoice)
     }
 

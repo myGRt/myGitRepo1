@@ -1,5 +1,6 @@
 package pl.futurecollars.invoicing.service
 
+import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 import static pl.futurecollars.invoicing.TestHelpers.invoice
 
@@ -14,7 +15,7 @@ class JsonServiceTest extends Specification {
         def invoiceAsString = jsonService.objectToJson(invoice)
 
         and:
-        def invoiceFromJson = jsonService.stringToObject(invoiceAsString)
+        def invoiceFromJson = jsonService.stringToObject(invoiceAsString, Invoice)
 
         then:
         invoice == invoiceFromJson
