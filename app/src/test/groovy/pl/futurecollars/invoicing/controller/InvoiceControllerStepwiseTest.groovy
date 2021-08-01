@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@Stepwise
+//@Stepwise
 class InvoiceControllerStepwiseTest extends Specification {
 
     @Autowired
@@ -38,16 +38,7 @@ class InvoiceControllerStepwiseTest extends Specification {
     private int invoiceId
 
 
-    def "empty array is returned when no invoices were added2"() {
-        when:
-        def response = mockMvc.perform(get("/invoices"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .response
-                .contentAsString
-        then:
-        response == "[]"
-    }
+ 
 
     def "empty array is returned when no invoices were created"() {
         expect:
@@ -71,7 +62,7 @@ class InvoiceControllerStepwiseTest extends Specification {
         response == "[]"
     }
 
-   
+
 
     def "empty array is returned when no invoices were added"() {
         when:
