@@ -26,11 +26,11 @@ class InvoiceControllerStepwiseTest extends Specification {
     private MockMvc mockMvc
 
     @Autowired
-    private JsonService jsonService;
+    private JsonService jsonService
 
     private Invoice originalInvoice = invoice(1)
 
-    private LocalDate updatedDate = LocalDate.of(2021, 07, 27)
+    private LocalDate updatedDate
 
     private static final ENDPOINT = "/invoices"
 

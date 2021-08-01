@@ -67,6 +67,7 @@ public class FileBasedDatabase implements Database {
                     .stream()
                     .filter(line -> !containsId(line, id))
                     .collect(Collectors.toList());
+
             updatedInvoicesList.add(jsonService.objectToJson(updatedInvoice));
 
             fileService.writeLinesToFile(invoicesPath, updatedInvoicesList);
