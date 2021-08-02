@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.service.JsonService
-import spock.lang.Unroll
 import static pl.futurecollars.invoicing.TestHelpers.invoice
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@Unroll
 class InvoiceControllerTest extends ControllerTest {
 
     @Autowired
@@ -19,6 +17,11 @@ class InvoiceControllerTest extends ControllerTest {
     @Autowired
     private JsonService jsonService
 
+
+    def "empty array is returned when no invoices were added"() {
+        expect:
+        getAllInvoices() == []
+    }
 
     def "empty array is returned when no invoices were added2"() {
         when:
@@ -53,10 +56,6 @@ class InvoiceControllerTest extends ControllerTest {
         response == "[]"
     }
 
-    def "empty array is returned when no invoices were added"() {
-        expect:
-        getAllInvoices() == []
-    }
 
     def "add invoice returns sequential id"() {
         given:
