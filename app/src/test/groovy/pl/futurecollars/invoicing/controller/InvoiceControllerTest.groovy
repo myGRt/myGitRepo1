@@ -13,8 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Unroll
 class InvoiceControllerTest extends ControllerTest {
 
-    private static final String ENDPOINT = "/invoices"
-
     @Autowired
     private MockMvc mockMvc
 
@@ -24,7 +22,7 @@ class InvoiceControllerTest extends ControllerTest {
 
     def "empty array is returned when no invoices were added2"() {
         when:
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get(INVOICE_ENDPOINT))
                 .andExpect(status().isOk())
                 .andReturn()
                 .response
@@ -35,7 +33,7 @@ class InvoiceControllerTest extends ControllerTest {
 
     def "empty array is returned when no invoices were created"() {
         expect:
-        mockMvc.perform(get(ENDPOINT))
+        mockMvc.perform(get(INVOICE_ENDPOINT))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -45,7 +43,7 @@ class InvoiceControllerTest extends ControllerTest {
 
     def "empty array is returned when no invoices were created2"() {
         when:
-        def response = mockMvc.perform(get("/invoices"))
+        def response = mockMvc.perform(get(INVOICE_ENDPOINT))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()

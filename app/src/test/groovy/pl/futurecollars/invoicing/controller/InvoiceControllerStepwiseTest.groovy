@@ -24,8 +24,8 @@ class InvoiceControllerStepwiseTest extends Specification {
     @Autowired
     private MockMvc mockMvc
 
-//    @Autowired
-//    private JsonService jsonService
+    @Autowired
+    private JsonService jsonService
 //
 //    private Invoice originalInvoice = invoice(1)
 //
@@ -37,18 +37,18 @@ class InvoiceControllerStepwiseTest extends Specification {
 //    @Shared
 //    private boolean isSetupDone = false
 
-    private static final ENDPOINT = "/invoices"
+    private static final String ENDPOINT = "/invoices"
 
 //
-//    List<Invoice> getAllInvoices() {
-//        def response = mockMvc.perform(get(ENDPOINT))
-//                .andExpect(status().isOk())
-//                .andReturn()
-//                .response
-//                .getContentAsString()
-//
-//        return jsonService.stringToObject(response, Invoice[])
-//    }
+    List<Invoice> getAllInvoices() {
+        def response = mockMvc.perform(get(ENDPOINT))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .getContentAsString()
+
+        return jsonService.stringToObject(response, Invoice[])
+    }
 //
 //    void deleteInvoice(int id) {
 //        mockMvc.perform(delete("$ENDPOINT/$id"))
@@ -77,6 +77,11 @@ class InvoiceControllerStepwiseTest extends Specification {
 
         then:
         response == "[]"
+    }
+
+    def "empty array is returned when no invoices were added"() {
+        expect:
+        getAllInvoices() == []
     }
 
 //    def "add single invoice"() {
