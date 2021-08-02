@@ -5,6 +5,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import pl.futurecollars.invoicing.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.service.JsonService
 import spock.lang.Shared
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@Stepwise
+//@Stepwise
 class InvoiceControllerStepwiseTest extends Specification {
 
     @Autowired
@@ -30,10 +31,80 @@ class InvoiceControllerStepwiseTest extends Specification {
 
     private Invoice originalInvoice = invoice(1)
 
-    private LocalDate updatedDate
+    private LocalDate updatedDate = LocalDate.of(2021, 07, 27)
 
     @Shared
     private int invoiceId
+
+    @Shared
+    private boolean isSetupDone = false
+
+    @Shared
+    def originalInvoice = invoice(1)
+
+
+    private static final ENDPOINT = "/invoices"
+
+    List<Invoice> getAllInvoices() {
+        def response = mockMvc.perform(get(ENDPOINT))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .getContentAsString()
+
+        return jsonService.stringToObject(response, Invoice[])
+    }
+
+    void deleteInvoice(int id) {
+        mockMvc.perform(delete("$ENDPOINT/$id"))
+                .andExpect(status().isNoContent())
+    }
+
+    void deleteAllInvoices() {
+        getAllInvoices().each { invoice -> deleteInvoice(invoice.id) }
+    }
+
+    def setup() {
+        if(!isSetupDone) {
+            deleteAllInvoices()
+            isSetupDone = true
+        }
+    }
+
+    def "empty array is returned when no invoices were created"() {
+
+        when:
+        def response = mockMvc.perform(get(ENDPOINT))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
+
+        then:
+        response == "[]"
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -130,6 +201,11 @@ class InvoiceControllerStepwiseTest extends Specification {
         mockMvc.perform(get("/invoices/$invoiceId"))
                 .andExpect(status().isNotFound())
     }
+
+
+
+//***************************************************************************
+
 
 
 }
