@@ -7,6 +7,8 @@ import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.service.JsonService
 import spock.lang.Specification
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -55,6 +57,14 @@ class InvoiceControllerStepwiseTest extends Specification {
                 .contentAsString
 
         jsonService.stringToObject(response, Invoice[])
+    }
+    def setup() {
+        getAllInvoices().each { invoice -> deleteInvoice(invoice.id) }
+    }
+
+    void deleteInvoice(int id) {
+        mockMvc.perform(delete("/invoices/$id"))
+                .andExpect(status().isNoContent())
     }
 
 
