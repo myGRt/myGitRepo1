@@ -45,6 +45,13 @@ dependencies {
     testImplementation "org.spockframework:spock-spring:${spockVersion}"
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
+
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
