@@ -66,9 +66,6 @@ class InvoiceControllerStepwiseTest extends Specification {
         }
     }
 
-
-
-
     def "empty array is returned when no invoices were created"() {
 
         when:
@@ -81,13 +78,6 @@ class InvoiceControllerStepwiseTest extends Specification {
         then:
         response == "[]"
     }
-
-
-
-
-
-
-
 
     def "add single invoice"() {
         given:
@@ -133,88 +123,74 @@ class InvoiceControllerStepwiseTest extends Specification {
     }
 
 
+    def "invoice is returned correctly when getting by id"() {
+        given:
+        def expectedInvoice = originalInvoice
+        expectedInvoice.id = invoiceId
+
+        when:
+        def response = mockMvc.perform(get("/invoices/$invoiceId"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
+
+        def invoice = jsonService.stringToObject(response, Invoice)
+
+        then:
+        invoice == expectedInvoice
+    }
 
 
+    def "invoice date can be modified"() {
+        given:
+        def modifiedInvoice = originalInvoice
+        modifiedInvoice.date = updatedDate
 
+        def invoiceAsJson = jsonService.objectToJson(modifiedInvoice)
 
+        expect:
+        mockMvc.perform(
+                put("/invoices/$invoiceId")
+                        .content(invoiceAsJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isNoContent())
+    }
 
+    def "updated invoice is returned correctly when getting by id"() {
+        given:
+        def expectedInvoice = originalInvoice
+        expectedInvoice.id = invoiceId
+        expectedInvoice.date = updatedDate
 
+        when:
+        def response = mockMvc.perform(get("/invoices/$invoiceId"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString
 
-//
-//    def "invoice is returned correctly when getting by id"() {
-//        given:
-//        def expectedInvoice = originalInvoice
-//        expectedInvoice.id = invoiceId
-//
-//        when:
-//        def response = mockMvc.perform(get("/invoices/$invoiceId"))
-//                .andExpect(status().isOk())
-//                .andReturn()
-//                .response
-//                .contentAsString
-//
-//        def invoice = jsonService.stringToObject(response, Invoice)
-//
-//        then:
-//        invoice == expectedInvoice
-//    }
-//
-//
-//    def "invoice date can be modified"() {
-//        given:
-//        def modifiedInvoice = originalInvoice
-//        modifiedInvoice.date = updatedDate
-//
-//        def invoiceAsJson = jsonService.objectToJson(modifiedInvoice)
-//
-//        expect:
-//        mockMvc.perform(
-//                put("/invoices/$invoiceId")
-//                        .content(invoiceAsJson)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        )
-//                .andDo(print())
-//                .andExpect(status().isNoContent())
-//    }
-//
-//    def "updated invoice is returned correctly when getting by id"() {
-//        given:
-//        def expectedInvoice = originalInvoice
-//        expectedInvoice.id = invoiceId
-//        expectedInvoice.date = updatedDate
-//
-//        when:
-//        def response = mockMvc.perform(get("/invoices/$invoiceId"))
-//                .andExpect(status().isOk())
-//                .andReturn()
-//                .response
-//                .contentAsString
-//
-//        def invoices = jsonService.stringToObject(response, Invoice)
-//
-//        then:
-//        invoices == expectedInvoice
-//    }
-//
-//    def "invoice can be deleted"() {
-//        expect:
-//        mockMvc.perform(delete("/invoices/$invoiceId"))
-//                .andExpect(status().isNoContent())
-//
-//        and:
-//        mockMvc.perform(delete("/invoices/$invoiceId"))
-//                .andExpect(status().isNotFound())
-//
-//        and:
-//        mockMvc.perform(get("/invoices/$invoiceId"))
-//                .andExpect(status().isNotFound())
-//    }
-//
+        def invoices = jsonService.stringToObject(response, Invoice)
 
+        then:
+        invoices == expectedInvoice
+    }
 
-//***************************************************************************
+    def "invoice can be deleted"() {
+        expect:
+        mockMvc.perform(delete("/invoices/$invoiceId"))
+                .andExpect(status().isNoContent())
 
+        and:
+        mockMvc.perform(delete("/invoices/$invoiceId"))
+                .andExpect(status().isNotFound())
 
+        and:
+        mockMvc.perform(get("/invoices/$invoiceId"))
+                .andExpect(status().isNotFound())
+    }
 
 
 }
