@@ -35,17 +35,7 @@ class InvoiceControllerStepwiseTest extends Specification {
     @Shared
     private int invoiceId
 
-    def "empty array is returned when no invoices were added"() {
-        when:
-        def response = mockMvc.perform(get("/invoices"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .response
-                .contentAsString
-
-        then:
-        response == "[]"
-    }
+   
 
 
     def "add single invoice"() {
@@ -70,24 +60,7 @@ class InvoiceControllerStepwiseTest extends Specification {
         invoiceId > 0
     }
 
-    def "one invoice is returned when getting all invoices"() {
-        given:
-        def expectedInvoice = originalInvoice
-        expectedInvoice.id = invoiceId
 
-        when:
-        def response = mockMvc.perform(get("/invoices"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .response
-                .contentAsString
-
-        def invoices = jsonService.stringToObject(response, Invoice[])
-
-        then:
-        invoices.size() == 1
-        invoices[0] == expectedInvoice
-    }
 
     def "invoice is returned correctly when getting by id"() {
         given:
