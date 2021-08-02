@@ -31,14 +31,25 @@ class InvoiceControllerStepwiseTest extends Specification {
 
     private LocalDate updatedDate = LocalDate.of(2021, 07, 27)
 
+    private static final String ENDPOINT = "/invoices"
+
     @Shared
     private int invoiceId
 
-//    @Shared
-//    private boolean isSetupDone = false
+    @Shared
+    private boolean isSetupDone = false
 
-    private static final String ENDPOINT = "/invoices"
+    
+    def setup() {
+        if (!isSetupDone) {
+            deleteAllInvoices()
+            isSetupDone = true
+        }
+    }
 
+    void deleteAllInvoices() {
+        getAllInvoices().each { invoice -> deleteInvoice(invoice.id) }
+    }
 
     List<Invoice> getAllInvoices() {
         def response = mockMvc.perform(get(ENDPOINT))
@@ -54,17 +65,6 @@ class InvoiceControllerStepwiseTest extends Specification {
         mockMvc.perform(delete("$ENDPOINT/$id"))
                 .andExpect(status().isNoContent())
     }
-
-    void deleteAllInvoices() {
-        getAllInvoices().each { invoice -> deleteInvoice(invoice.id) }
-    }
-
-//    def setup() {
-////        if(!isSetupDone) {
-//        deleteAllInvoices()
-////            isSetupDone = true
-//    }
-
 
     def "empty array is returned when no invoices were created"() {
 
