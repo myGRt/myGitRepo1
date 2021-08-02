@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class InvoiceControllerStepwiseTest extends Specification {
+class InvoiceControllerStepwiseTest extends ControllerTest {
 
     @Autowired
     private MockMvc mockMvc
