@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -25,5 +26,16 @@ class InvoiceControllerStepwiseTest extends Specification {
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
     }
+
+    def "empty array is returned when no invoices were created2"() {
+        expect:
+        mockMvc.perform(get("/invoices"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .response
+                .contentAsString == "[]"
+    }
+
 
 }
