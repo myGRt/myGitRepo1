@@ -35,7 +35,7 @@ class InvoiceControllerStepwiseTest extends Specification {
     @Shared
     private int invoiceId
 
-   
+
 
 
     def "add single invoice"() {
