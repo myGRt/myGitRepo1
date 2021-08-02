@@ -36,11 +36,8 @@ class InvoiceControllerStepwiseTest extends Specification {
     @Shared
     private int invoiceId
 
-    @Shared
-    private boolean isSetupDone = false
-
-    @Shared
-    def originalInvoice = invoice(1)
+//    @Shared
+//    private boolean isSetupDone = false
 
 
     private static final ENDPOINT = "/invoices"
@@ -64,12 +61,12 @@ class InvoiceControllerStepwiseTest extends Specification {
         getAllInvoices().each { invoice -> deleteInvoice(invoice.id) }
     }
 
-    def setup() {
-        if(!isSetupDone) {
-            deleteAllInvoices()
-            isSetupDone = true
-        }
-    }
+//    def setup() {
+//        if(!isSetupDone) {
+//            deleteAllInvoices()
+//            isSetupDone = true
+//        }
+//    }
 
     def "empty array is returned when no invoices were created"() {
 
@@ -83,31 +80,6 @@ class InvoiceControllerStepwiseTest extends Specification {
         then:
         response == "[]"
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def "add single invoice"() {
         given:
