@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Car {
 
-    @ApiModelProperty(value = "Car registration number", required = true, example = "KWI 601587")
+    @ApiModelProperty(value = "Car registration number", required = true, example = "PZ 1234P")
     private String registrationNumber;
 
     @ApiModelProperty(value = "Specifies if car is used also for personal reasons", required = true, example = "true")
