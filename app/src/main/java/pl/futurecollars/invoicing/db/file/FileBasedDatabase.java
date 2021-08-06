@@ -1,4 +1,4 @@
-package pl.futurecollars.invoicing.db.memory;
+package pl.futurecollars.invoicing.db.file;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -96,6 +96,6 @@ public class FileBasedDatabase implements Database {
     }
 
     private boolean containsId(String line, int id) {
-        return line.contains("\"id\":" + id + ",");
+        return line.contains("{\"id\":" + id + ",\"number\"");
     }
 }

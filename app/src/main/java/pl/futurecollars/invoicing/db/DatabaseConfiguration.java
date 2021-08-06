@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.futurecollars.invoicing.db.memory.FileBasedDatabase;
+import pl.futurecollars.invoicing.db.file.FileBasedDatabase;
 import pl.futurecollars.invoicing.db.memory.InMemoryDatabase;
 import pl.futurecollars.invoicing.service.FileService;
 import pl.futurecollars.invoicing.service.IdService;
@@ -19,6 +19,7 @@ import pl.futurecollars.invoicing.service.JsonService;
 public class DatabaseConfiguration {
 
     @Bean
+    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
     public IdService idService(FileService fileService,
                                @Value("${invoicing-system.database.directory}") String databaseDirectory,
                                @Value("${invoicing-system.database.id.file}") String idFile)
@@ -27,8 +28,8 @@ public class DatabaseConfiguration {
         return new IdService(idFilePath, fileService);
     }
 
-    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
     @Bean
+    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
     public Database fileBasedDatabase(IdService idService,
                                       FileService fileService,
                                       JsonService jsonService,
@@ -40,8 +41,8 @@ public class DatabaseConfiguration {
         return new FileBasedDatabase(databaseFilePath, idService, fileService, jsonService);
     }
 
-    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
     @Bean
+    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
     public Database inMemoryDatabase() {
         log.debug("Creating in-memory database");
         return new InMemoryDatabase();
