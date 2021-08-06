@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import pl.futurecollars.invoicing.db.file.FileBasedDatabase;
 import pl.futurecollars.invoicing.db.memory.InMemoryDatabase;
+import pl.futurecollars.invoicing.db.sql.SqlDatabase;
 import pl.futurecollars.invoicing.service.FileService;
 import pl.futurecollars.invoicing.service.IdService;
 import pl.futurecollars.invoicing.service.JsonService;
@@ -42,9 +44,14 @@ public class DatabaseConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "sql")
+    public Database sqlDatabase(JdbcTemplate jdbcTemplate) {
+        return new SqlDatabase(jdbcTemplate);
+    }
+
+    @Bean
     @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
     public Database inMemoryDatabase() {
-        log.debug("Creating in-memory database");
         return new InMemoryDatabase();
     }
 }
