@@ -38,7 +38,6 @@ public class DatabaseConfiguration {
                                       @Value("${invoicing-system.database.directory}") String databaseDirectory,
                                       @Value("${invoicing-system.database.invoices.file}") String invoicesFile)
             throws IOException {
-        log.debug("Creating in-file database");
         Path databaseFilePath = Files.createTempFile(databaseDirectory, invoicesFile);
         return new FileBasedDatabase(databaseFilePath, idService, fileService, jsonService);
     }

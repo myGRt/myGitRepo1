@@ -16,12 +16,12 @@ public class InvoiceController implements InvoiceApi {
     private final InvoiceService invoiceService;
 
     @Override
-    public List<Invoice> getAllInvoices() {
+    public List<Invoice> getAll() {
         return invoiceService.getAll();
     }
 
     @Override
-    public int addInvoice(@RequestBody Invoice invoice) {
+    public int add(@RequestBody Invoice invoice) {
         return invoiceService.save(invoice);
     }
 
@@ -40,7 +40,7 @@ public class InvoiceController implements InvoiceApi {
     }
 
     @Override
-    public ResponseEntity<?> updateById(@PathVariable int id, @RequestBody Invoice updatedInvoice) {
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Invoice updatedInvoice) {
         return invoiceService.update(id, updatedInvoice)
                 .map(invoice -> ResponseEntity.noContent().build())
                 .orElse(ResponseEntity.notFound().build());
