@@ -34,6 +34,7 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
     implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
 
@@ -107,6 +108,25 @@ task testWithSqlDatabase(type: Test) {
     systemProperty 'spring.profiles.active', 'sql'
 }
 
+task testWithJpaDatabase(type: Test) {
+    systemProperty 'spring.profiles.active', 'jpa'
+}
+
+task testWithJpaFlywayDatabase(type: Test) {
+    systemProperty 'spring.profiles.active', 'jpa-flyway'
+}
+
+task testWithPostgreSqlDatabase(type: Test) {
+    systemProperty 'spring.profiles.active', 'sql-pg'
+}
+
 check.dependsOn testWithFileDatabase
 check.dependsOn testWithMemoryDatabase
 check.dependsOn testWithSqlDatabase
+check.dependsOn testWithJpaDatabase
+check.dependsOn testWithJpaFlywayDatabase
+
+String osName = System.getProperty("os.name").toLowerCase()
+if (osName.contains("mac")) {
+    check.dependsOn testWithPostgreSqlDatabase
+}
